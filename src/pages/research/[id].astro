@@ -2,6 +2,7 @@
 // src/pages/research/[id].astro
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import { getStatusColour } from "../../utils/helpers";
 
 export async function getStaticPaths() {
     const projects = await getCollection("projects");
@@ -12,13 +13,14 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-
 const { Content: ProjectContent } = await render(project);
 
 const allEntries = await getCollection("entries");
 const projectEntries = allEntries
     .filter((entry) => entry.data.project.id === project.id)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const statusColour = getStatusColour(project.data.status);
 ---
 
 <BaseLayout title={`${project.data.title} | Research`}>
@@ -27,24 +29,45 @@ const projectEntries = allEntries
             <a href="/research" class="back-link"
                 >&larr; Back to Research Projects</a
             >
-            <h1>{project.data.title}</h1>
-            <div class="status-badge">
-                <span class="status-dot"></span>
-                {project.data.status}
+
+            <div class="title-wrapper">
+                <h1>{project.data.title}</h1>
+                <div
+                    class="status-badge"
+                    style={`--badge-colour: ${statusColour};`}
+                >
+                    <span class="status-dot"></span>
+                    {project.data.status}
+                </div>
             </div>
         </header>
 
-        <section class="project-overview markdown-content">
+        {
+            project.data.image && (
+                <div class="hero-image-wrapper fade-in-delayed">
+                    <img
+                        src={project.data.image}
+                        alt={project.data.title}
+                        class="hero-image"
+                    />
+                </div>
+            )
+        }
+
+        <section class="project-overview markdown-content fade-in-delayed">
             <h2>Project Overview</h2>
             <ProjectContent />
         </section>
 
-        <section class="project-timeline">
+        <section class="project-timeline fade-in-delayed-more">
             <h2>Research Log</h2>
 
             {
                 projectEntries.length === 0 ? (
-                    <p class="empty-state">No updates published yet.</p>
+                    <p class="empty-state">
+                        No updates published yet. Check back soon as the project
+                        progresses.
+                    </p>
                 ) : (
                     <div class="timeline-container">
                         {projectEntries.map(async (entry) => {
@@ -52,7 +75,10 @@ const projectEntries = allEntries
                                 await render(entry);
                             return (
                                 <div class="timeline-entry">
-                                    <div class="timeline-marker" />
+                                    <div
+                                        class="timeline-marker"
+                                        style={`border-color: ${statusColour}; box-shadow: 0 0 10px ${statusColour}40;`}
+                                    />
                                     <div class="entry-card">
                                         <time
                                             datetime={entry.data.date.toISOString()}
@@ -61,7 +87,7 @@ const projectEntries = allEntries
                                                 "en-GB",
                                                 {
                                                     day: "numeric",
-                                                    month: "short",
+                                                    month: "long",
                                                     year: "numeric",
                                                 },
                                             )}
@@ -88,75 +114,181 @@ const projectEntries = allEntries
     }
 
     .project-header {
-        margin-bottom: 1rem;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
     }
 
     .back-link {
-        margin-top: 1rem;
         color: var(--text-secondary);
         display: inline-block;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
     }
 
     .back-link:hover {
         color: var(--accent-blue);
+        transform: translateX(-4px);
+    }
+
+    .title-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    h1 {
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+        margin: 0;
+        line-height: 1.1;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: var(--bg-secondary);
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        border: 1px solid rgba(150, 150, 150, 0.15);
+    }
+
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--badge-colour);
+        box-shadow: 0 0 8px var(--badge-colour);
+    }
+
+    .hero-image-wrapper {
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 4rem;
+        border: 1px solid rgba(150, 150, 150, 0.1);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    :root[data-theme="light"] .hero-image-wrapper {
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-image {
+        width: 100%;
+        height: auto;
+        max-height: 450px;
+        object-fit: cover;
+        display: block;
     }
 
     .project-overview {
-        margin-bottom: 5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 4rem;
+        border-bottom: 1px solid rgba(150, 150, 150, 0.1);
     }
 
+    .project-overview h2,
     .project-timeline h2 {
-        margin-bottom: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
     }
 
     .timeline-container {
         position: relative;
         padding-left: 2rem;
         border-left: 2px solid rgba(150, 150, 150, 0.1);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
     .timeline-entry {
         position: relative;
-        margin-bottom: 3rem;
+        margin-bottom: 3.5rem;
+    }
+
+    .timeline-entry:last-child {
+        margin-bottom: 0;
     }
 
     .timeline-marker {
         position: absolute;
-        left: -2.45rem;
-        top: 0.25rem;
-        width: 12px;
-        height: 12px;
+        left: -2.59rem;
+        top: 1.5rem;
+        width: 14px;
+        height: 14px;
         border-radius: 50%;
         background: var(--bg-primary);
-        border: 2px solid var(--accent-blue);
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        border-width: 3px;
+        border-style: solid;
+        z-index: 2;
     }
 
     .entry-card {
         background: var(--bg-secondary);
-        padding: 1.5rem;
-        border-radius: 12px;
+        padding: 2rem;
+        border-radius: 16px;
         border: 1px solid rgba(150, 150, 150, 0.1);
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .entry-card:hover {
+        transform: translateX(4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    :root[data-theme="light"] .entry-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
     }
 
     .entry-card time {
         font-size: 0.85rem;
-        color: var(--accent-indigo);
-        font-weight: 600;
+        color: var(--text-secondary);
+        font-weight: 500;
         letter-spacing: 0.05em;
         text-transform: uppercase;
+        display: block;
+        margin-bottom: 0.5rem;
     }
 
     .entry-card h3 {
-        margin: 0.5rem 0 1rem 0;
-        font-size: 1.3rem;
+        margin: 0 0 1rem 0;
+        font-size: 1.4rem;
+        color: var(--text-primary);
     }
 
     .empty-state {
         color: var(--text-secondary);
         font-style: italic;
+        padding: 2rem;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .markdown-content p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+    }
+
+    .markdown-content h3 {
+        color: var(--text-primary);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .entry-content p:last-child {
+        margin-bottom: 0;
     }
 </style>

@@ -1,5 +1,5 @@
 ---
-title: "Magnetohydrodynamics of Wind-Cloud Systems in Starbust Galaxies"
+title: "Magnetohydrodynamics of Wind-Cloud Systems in Starburst Galaxies"
 description: "Developing MHD wind-cloud simulations in GPU-accelerated codes."
 image: "/project-1.jpg"
 status: "Active"
