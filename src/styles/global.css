@@ -100,9 +100,10 @@ a:hover {
 .status-dot {
     width: 8px;
     height: 8px;
-    background-color: var(--accent-indigo);
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent-indigo);
+    background-color: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    flex-shrink: 0;
 }
 
 .fade-in {
