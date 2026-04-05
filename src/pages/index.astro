@@ -1,17 +1,134 @@
 ---
-
+// src/pages/index.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Daniel Villarruel">
+	<section class="hero">
+		<div class="hero-content">
+			<h1 class="fade-in">Daniel Villarruel Yánez</h1>
+			<div class="hero-lower fade-in-delayed">
+				<div class="hero-text">
+					<p class="subtitle">MSc Physics Student @ Yachay Tech</p>
+
+					<div class="status-badge">
+						<span class="status-dot"></span>
+						Currently running MHD simulations for my MSc thesis
+					</div>
+				</div>
+
+				<div class="hero-image-container">
+					<img
+						src="/profile.jpg"
+						alt="My Profile Photo"
+						class="profile-photo"
+					/>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="about fade-in-delayed-more">
+		<h2>About me</h2>
+		<p>
+			I am an MSc in Physics (Fundamental Physics) student at <a
+				href="https://yachaytech.edu.ec">Yachay Tech</a
+			> and a graduate researcher at the <a
+				href="https://cphysplus.github.io">CPhys+ Research Group</a
+			>.
+		</p>
+		<p>
+			I work in HD/MHD simulations of wind-cloud systems in starburst
+			galaxies. My main interests are the microphysics of the
+			interstellar/circumgalactic media, the role of local radiation, and
+			the production of synthetic observables.
+		</p>
+		<p>
+			This summer I will join <a href="https://www.mpia.de/en">MPIA</a> as a
+			Research Intern under <a
+				href="https://sites.google.com/view/g-mattia"
+				>Dr. Giancarlo Mattia</a
+			> (<a href="https://www.ufos-project.eu">UFOS</a>).
+		</p>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		margin-bottom: 3em;
+		padding-top: 2rem;
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 5vw, 3rem);
+		max-width: 800px;
+		margin-bottom: -2.5rem;
+	}
+
+	.hero-lower {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 3rem;
+	}
+
+	.hero-text {
+		flex: 1;
+		max-width: 500px;
+	}
+
+	.subtitle {
+		font-size: 1.35rem;
+		color: var(--text-secondary);
+		margin-top: 0;
+		margin-bottom: 2rem;
+	}
+
+	.hero-image-container {
+		flex-shrink: 0;
+	}
+
+	.profile-photo {
+		width: 180px;
+		height: 180px;
+		border-radius: 24px;
+		object-fit: cover;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+		transform: rotate(2deg);
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	.profile-photo:hover {
+		transform: rotate(0deg) scale(1.02);
+		box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25);
+	}
+
+	.about h2 {
+		font-size: 1.5rem;
+		margin-bottom: 1rem;
+		color: var(--text-primary);
+	}
+
+	.about p {
+		color: var(--text-secondary);
+		max-width: 700px;
+		margin-bottom: 1.5rem;
+		font-size: 1.05rem;
+	}
+
+	@media (max-width: 768px) {
+		.hero-lower {
+			flex-direction: column-reverse;
+			align-items: flex-start;
+			gap: 2rem;
+		}
+
+		.profile-photo {
+			width: 140px;
+			height: 140px;
+		}
+	}
+</style>

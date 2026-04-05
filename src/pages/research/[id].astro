@@ -1,0 +1,162 @@
+---
+// src/pages/research/[id].astro
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+    const projects = await getCollection("projects");
+    return projects.map((project) => ({
+        params: { id: project.id },
+        props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+
+const { Content: ProjectContent } = await render(project);
+
+const allEntries = await getCollection("entries");
+const projectEntries = allEntries
+    .filter((entry) => entry.data.project.id === project.id)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={`${project.data.title} | Research`}>
+    <article class="project-container fade-in">
+        <header class="project-header">
+            <a href="/research" class="back-link"
+                >&larr; Back to Research Projects</a
+            >
+            <h1>{project.data.title}</h1>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                {project.data.status}
+            </div>
+        </header>
+
+        <section class="project-overview markdown-content">
+            <h2>Project Overview</h2>
+            <ProjectContent />
+        </section>
+
+        <section class="project-timeline">
+            <h2>Research Log</h2>
+
+            {
+                projectEntries.length === 0 ? (
+                    <p class="empty-state">No updates published yet.</p>
+                ) : (
+                    <div class="timeline-container">
+                        {projectEntries.map(async (entry) => {
+                            const { Content: EntryContent } =
+                                await render(entry);
+                            return (
+                                <div class="timeline-entry">
+                                    <div class="timeline-marker" />
+                                    <div class="entry-card">
+                                        <time
+                                            datetime={entry.data.date.toISOString()}
+                                        >
+                                            {entry.data.date.toLocaleDateString(
+                                                "en-GB",
+                                                {
+                                                    day: "numeric",
+                                                    month: "short",
+                                                    year: "numeric",
+                                                },
+                                            )}
+                                        </time>
+                                        <h3>{entry.data.title}</h3>
+                                        <div class="markdown-content entry-content">
+                                            <EntryContent />
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )
+            }
+        </section>
+    </article>
+</BaseLayout>
+
+<style>
+    .project-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .project-header {
+        margin-bottom: 1rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+    }
+
+    .back-link {
+        margin-top: 1rem;
+        color: var(--text-secondary);
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .back-link:hover {
+        color: var(--accent-blue);
+    }
+
+    .project-overview {
+        margin-bottom: 5rem;
+    }
+
+    .project-timeline h2 {
+        margin-bottom: 2rem;
+    }
+
+    .timeline-container {
+        position: relative;
+        padding-left: 2rem;
+        border-left: 2px solid rgba(150, 150, 150, 0.1);
+    }
+
+    .timeline-entry {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: -2.45rem;
+        top: 0.25rem;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--bg-primary);
+        border: 2px solid var(--accent-blue);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .entry-card {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(150, 150, 150, 0.1);
+    }
+
+    .entry-card time {
+        font-size: 0.85rem;
+        color: var(--accent-indigo);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .entry-card h3 {
+        margin: 0.5rem 0 1rem 0;
+        font-size: 1.3rem;
+    }
+
+    .empty-state {
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+</style>

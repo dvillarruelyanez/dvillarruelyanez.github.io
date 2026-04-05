@@ -1,0 +1,234 @@
+---
+// src/layouts/BaseLayout.astro
+import "../styles/global.css";
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const { title, description = "MSc Physics Student and Researcher" } =
+    Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <title>{title}</title>
+
+        <script is:inline>
+            const theme = (() => {
+                if (
+                    typeof localStorage !== "undefined" &&
+                    localStorage.getItem("theme")
+                ) {
+                    return localStorage.getItem("theme");
+                }
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    return "dark";
+                }
+                return "dark";
+            })();
+
+            if (theme === "light") {
+                document.documentElement.setAttribute("data-theme", "light");
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+            window.localStorage.setItem("theme", theme);
+        </script>
+    </head>
+    <body>
+        <div class="ambient-glow"></div>
+
+        <header class="site-header">
+            <nav class="container">
+                <a href="/" class="site-title">Daniel Villarruel</a>
+                <div class="nav-right">
+                    <div class="nav-links">
+                        <a href="/">Home</a>
+                        <a href="/research">Research</a>
+                    </div>
+
+                    <button id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg
+                            id="sun-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="theme-icon"
+                            ><circle cx="12" cy="12" r="4"></circle><path
+                                d="M12 2v2"></path><path d="M12 20v2"
+                            ></path><path d="m4.93 4.93 1.41 1.41"></path><path
+                                d="m17.66 17.66 1.41 1.41"></path><path
+                                d="M2 12h2"></path><path d="M20 12h2"
+                            ></path><path d="m6.34 17.66-1.41 1.41"></path><path
+                                d="m19.07 4.93-1.41 1.41"></path></svg
+                        >
+                        <svg
+                            id="moon-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="theme-icon"
+                            style="display: none;"
+                            ><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+                            ></path></svg
+                        >
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container">
+            <slot />
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p>
+                    &copy; {new Date().getFullYear()} Daniel Villarruel
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            const handleToggleClick = () => {
+                const element = document.documentElement;
+                const isDark = element.getAttribute("data-theme") === "dark";
+
+                const newTheme = isDark ? "light" : "dark";
+                element.setAttribute("data-theme", newTheme);
+                localStorage.setItem("theme", newTheme);
+
+                // Update icons
+                document.getElementById("sun-icon").style.display =
+                    newTheme === "dark" ? "block" : "none";
+                document.getElementById("moon-icon").style.display =
+                    newTheme === "light" ? "block" : "none";
+            };
+
+            document
+                .getElementById("theme-toggle")
+                .addEventListener("click", handleToggleClick);
+
+            // Ensure correct icon shows on initial load
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+            document.getElementById("sun-icon").style.display =
+                currentTheme === "dark" ? "block" : "none";
+            document.getElementById("moon-icon").style.display =
+                currentTheme === "light" ? "block" : "none";
+        </script>
+    </body>
+</html>
+
+<style>
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .site-header {
+        padding: 2rem 0;
+        border-bottom: 1px solid rgba(150, 150, 150, 0.1); /* Adjusted for both themes */
+    }
+
+    .site-header nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .site-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    .site-title:hover {
+        color: var(--accent-blue);
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .nav-links a {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+        color: var(--text-primary);
+    }
+
+    #theme-toggle {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition:
+            background-color 0.2s,
+            color 0.2s;
+    }
+
+    #theme-toggle:hover {
+        color: var(--accent-violet);
+        background-color: var(--bg-secondary);
+    }
+
+    main {
+        flex: 1;
+        padding: 4rem 0;
+    }
+
+    .site-footer {
+        padding: 2rem 0;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        border-top: 1px solid rgba(150, 150, 150, 0.1); /* Adjusted for both themes */
+    }
+</style>
