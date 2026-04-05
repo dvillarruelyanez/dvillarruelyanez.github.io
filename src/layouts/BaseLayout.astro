@@ -161,7 +161,6 @@ const { title, description = "MSc Physics Student and Researcher" } =
         </footer>
 
         <script>
-            // --- Theme Toggle Logic ---
             const handleToggleClick = () => {
                 const element = document.documentElement;
                 const isDark = element.getAttribute("data-theme") === "dark";
@@ -200,11 +199,9 @@ const { title, description = "MSc Physics Student and Researcher" } =
                     navLinks.classList.toggle("active");
                     const isActive = navLinks.classList.contains("active");
 
-                    // Swap icons
                     menuIcon.style.display = isActive ? "none" : "block";
                     closeIcon.style.display = isActive ? "block" : "none";
 
-                    // Prevent background scrolling when menu is open
                     document.body.style.overflow = isActive ? "hidden" : "";
                 });
             }
@@ -225,7 +222,7 @@ const { title, description = "MSc Physics Student and Researcher" } =
         padding: 2rem 0;
         border-bottom: 1px solid rgba(150, 150, 150, 0.1);
         position: relative;
-        z-index: 100; /* Keeps header above mobile menu overlay */
+        z-index: 100;
     }
 
     .site-header nav {
@@ -240,7 +237,7 @@ const { title, description = "MSc Physics Student and Researcher" } =
         font-size: 1.2rem;
         color: var(--text-primary);
         letter-spacing: -0.01em;
-        z-index: 101; /* Keeps title clickable when menu is open */
+        z-index: 101;
     }
 
     .site-title:hover {
@@ -272,10 +269,9 @@ const { title, description = "MSc Physics Student and Researcher" } =
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        z-index: 101; /* Keeps buttons clickable over the overlay */
+        z-index: 101;
     }
 
-    /* Common button styles */
     #theme-toggle,
     .mobile-toggle {
         background: transparent;
@@ -299,7 +295,7 @@ const { title, description = "MSc Physics Student and Researcher" } =
     }
 
     .mobile-toggle {
-        display: none; /* Hidden on desktop */
+        display: none;
     }
 
     main {
@@ -315,13 +311,11 @@ const { title, description = "MSc Physics Student and Researcher" } =
         border-top: 1px solid rgba(150, 150, 150, 0.1);
     }
 
-    /* --- Mobile Responsiveness --- */
     @media (max-width: 768px) {
         .mobile-toggle {
             display: flex;
         }
 
-        /* Transform nav-links into a full-screen overlay */
         .nav-links {
             position: fixed;
             top: 0;
@@ -334,18 +328,16 @@ const { title, description = "MSc Physics Student and Researcher" } =
             align-items: center;
             gap: 2.5rem;
             opacity: 0;
-            pointer-events: none; /* Prevents clicking when invisible */
+            pointer-events: none;
             transition: opacity 0.3s ease;
             z-index: 90;
         }
 
-        /* Applied via JS when hamburger is clicked */
         .nav-links.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        /* Make mobile links larger and more legible */
         .nav-links a {
             font-size: 1.5rem;
             font-family: var(--font-display);
