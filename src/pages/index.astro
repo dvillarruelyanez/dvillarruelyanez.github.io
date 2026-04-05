@@ -1,6 +1,7 @@
 ---
 // src/pages/index.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SmartLink from "../components/SmartLink.astro";
 ---
 
 <BaseLayout title="Daniel Villarruel">
@@ -33,10 +34,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 	<section class="about fade-in-delayed-more">
 		<h2>About me</h2>
 		<p>
-			I am an MSc in Physics (Fundamental Physics) student at <a
-				href="https://yachaytech.edu.ec">Yachay Tech</a
-			> and a graduate researcher at the <a
-				href="https://cphysplus.github.io">CPhys+ Research Group</a
+			I am an MSc in Physics (Fundamental Physics) student at <SmartLink
+				href="https://yachaytech.edu.ec">Yachay Tech</SmartLink
+			> and a graduate researcher at the <SmartLink
+				href="https://cphysplus.github.io"
+				>CPhys+ Research Group</SmartLink
 			>.
 		</p>
 		<p>
@@ -46,11 +48,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			the production of synthetic observables.
 		</p>
 		<p>
-			This summer I will join <a href="https://www.mpia.de/en">MPIA</a> as a
-			Research Intern under <a
+			This summer I will join <SmartLink href="https://www.mpia.de/en"
+				>MPIA</SmartLink
+			> as a Research Intern under <SmartLink
 				href="https://sites.google.com/view/g-mattia"
-				>Dr. Giancarlo Mattia</a
-			> (<a href="https://www.ufos-project.eu">UFOS</a>).
+				>Dr. Giancarlo Mattia</SmartLink
+			> (<SmartLink href="https://www.ufos-project.eu">UFOS</SmartLink>).
 		</p>
 	</section>
 </BaseLayout>
@@ -64,7 +67,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 	h1 {
 		font-size: clamp(2.5rem, 5vw, 3rem);
 		margin-top: 0;
-		margin-bottom: 1rem;
+		margin-bottom: 0.25rem;
 		line-height: 1.1;
 	}
 

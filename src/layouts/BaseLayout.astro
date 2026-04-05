@@ -56,50 +56,93 @@ const { title, description = "MSc Physics Student and Researcher" } =
         <header class="site-header">
             <nav class="container">
                 <a href="/" class="site-title">Daniel Villarruel</a>
+
                 <div class="nav-right">
-                    <div class="nav-links">
+                    <div class="nav-links" id="nav-links">
                         <a href="/">Home</a>
                         <a href="/research">Research</a>
+                        <a href="/cv">CV</a>
                     </div>
 
-                    <button id="theme-toggle" aria-label="Toggle dark mode">
-                        <svg
-                            id="sun-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="theme-icon"
-                            ><circle cx="12" cy="12" r="4"></circle><path
-                                d="M12 2v2"></path><path d="M12 20v2"
-                            ></path><path d="m4.93 4.93 1.41 1.41"></path><path
-                                d="m17.66 17.66 1.41 1.41"></path><path
-                                d="M2 12h2"></path><path d="M20 12h2"
-                            ></path><path d="m6.34 17.66-1.41 1.41"></path><path
-                                d="m19.07 4.93-1.41 1.41"></path></svg
+                    <div class="nav-controls">
+                        <button id="theme-toggle" aria-label="Toggle dark mode">
+                            <svg
+                                id="sun-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="theme-icon"
+                                ><circle cx="12" cy="12" r="4"></circle><path
+                                    d="M12 2v2"></path><path d="M12 20v2"
+                                ></path><path d="m4.93 4.93 1.41 1.41"
+                                ></path><path d="m17.66 17.66 1.41 1.41"
+                                ></path><path d="M2 12h2"></path><path
+                                    d="M20 12h2"></path><path
+                                    d="m6.34 17.66-1.41 1.41"></path><path
+                                    d="m19.07 4.93-1.41 1.41"></path></svg
+                            >
+                            <svg
+                                id="moon-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="theme-icon"
+                                style="display: none;"
+                                ><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+                                ></path></svg
+                            >
+                        </button>
+
+                        <button
+                            id="mobile-toggle"
+                            aria-label="Open menu"
+                            class="mobile-toggle"
                         >
-                        <svg
-                            id="moon-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="theme-icon"
-                            style="display: none;"
-                            ><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
-                            ></path></svg
-                        >
-                    </button>
+                            <svg
+                                id="menu-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><line x1="4" x2="20" y1="12" y2="12"
+                                ></line><line x1="4" x2="20" y1="6" y2="6"
+                                ></line><line x1="4" x2="20" y1="18" y2="18"
+                                ></line></svg
+                            >
+                            <svg
+                                id="close-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                style="display: none;"
+                                ><path d="M18 6 6 18"></path><path
+                                    d="m6 6 12 12"></path></svg
+                            >
+                        </button>
+                    </div>
                 </div>
             </nav>
         </header>
@@ -111,12 +154,14 @@ const { title, description = "MSc Physics Student and Researcher" } =
         <footer class="site-footer">
             <div class="container">
                 <p>
-                    &copy; {new Date().getFullYear()} Daniel Villarruel
+                    &copy; {new Date().getFullYear()} Daniel Villarruel Yánez. All
+                    rights reserved.
                 </p>
             </div>
         </footer>
 
         <script>
+            // --- Theme Toggle Logic ---
             const handleToggleClick = () => {
                 const element = document.documentElement;
                 const isDark = element.getAttribute("data-theme") === "dark";
@@ -125,7 +170,6 @@ const { title, description = "MSc Physics Student and Researcher" } =
                 element.setAttribute("data-theme", newTheme);
                 localStorage.setItem("theme", newTheme);
 
-                // Update icons
                 document.getElementById("sun-icon").style.display =
                     newTheme === "dark" ? "block" : "none";
                 document.getElementById("moon-icon").style.display =
@@ -136,13 +180,34 @@ const { title, description = "MSc Physics Student and Researcher" } =
                 .getElementById("theme-toggle")
                 .addEventListener("click", handleToggleClick);
 
-            // Ensure correct icon shows on initial load
             const currentTheme =
                 document.documentElement.getAttribute("data-theme");
-            document.getElementById("sun-icon").style.display =
-                currentTheme === "dark" ? "block" : "none";
-            document.getElementById("moon-icon").style.display =
-                currentTheme === "light" ? "block" : "none";
+            if (document.getElementById("sun-icon")) {
+                document.getElementById("sun-icon").style.display =
+                    currentTheme === "dark" ? "block" : "none";
+                document.getElementById("moon-icon").style.display =
+                    currentTheme === "light" ? "block" : "none";
+            }
+
+            // --- Mobile Menu Logic ---
+            const mobileToggle = document.getElementById("mobile-toggle");
+            const navLinks = document.getElementById("nav-links");
+            const menuIcon = document.getElementById("menu-icon");
+            const closeIcon = document.getElementById("close-icon");
+
+            if (mobileToggle) {
+                mobileToggle.addEventListener("click", () => {
+                    navLinks.classList.toggle("active");
+                    const isActive = navLinks.classList.contains("active");
+
+                    // Swap icons
+                    menuIcon.style.display = isActive ? "none" : "block";
+                    closeIcon.style.display = isActive ? "block" : "none";
+
+                    // Prevent background scrolling when menu is open
+                    document.body.style.overflow = isActive ? "hidden" : "";
+                });
+            }
         </script>
     </body>
 </html>
@@ -158,7 +223,9 @@ const { title, description = "MSc Physics Student and Researcher" } =
 
     .site-header {
         padding: 2rem 0;
-        border-bottom: 1px solid rgba(150, 150, 150, 0.1); /* Adjusted for both themes */
+        border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+        position: relative;
+        z-index: 100; /* Keeps header above mobile menu overlay */
     }
 
     .site-header nav {
@@ -173,6 +240,7 @@ const { title, description = "MSc Physics Student and Researcher" } =
         font-size: 1.2rem;
         color: var(--text-primary);
         letter-spacing: -0.01em;
+        z-index: 101; /* Keeps title clickable when menu is open */
     }
 
     .site-title:hover {
@@ -193,13 +261,23 @@ const { title, description = "MSc Physics Student and Researcher" } =
     .nav-links a {
         color: var(--text-secondary);
         font-size: 0.95rem;
+        transition: color 0.2s ease;
     }
 
     .nav-links a:hover {
         color: var(--text-primary);
     }
 
-    #theme-toggle {
+    .nav-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 101; /* Keeps buttons clickable over the overlay */
+    }
+
+    /* Common button styles */
+    #theme-toggle,
+    .mobile-toggle {
         background: transparent;
         border: none;
         color: var(--text-secondary);
@@ -214,9 +292,14 @@ const { title, description = "MSc Physics Student and Researcher" } =
             color 0.2s;
     }
 
-    #theme-toggle:hover {
+    #theme-toggle:hover,
+    .mobile-toggle:hover {
         color: var(--accent-violet);
         background-color: var(--bg-secondary);
+    }
+
+    .mobile-toggle {
+        display: none; /* Hidden on desktop */
     }
 
     main {
@@ -229,6 +312,44 @@ const { title, description = "MSc Physics Student and Researcher" } =
         text-align: center;
         color: var(--text-secondary);
         font-size: 0.85rem;
-        border-top: 1px solid rgba(150, 150, 150, 0.1); /* Adjusted for both themes */
+        border-top: 1px solid rgba(150, 150, 150, 0.1);
+    }
+
+    /* --- Mobile Responsiveness --- */
+    @media (max-width: 768px) {
+        .mobile-toggle {
+            display: flex;
+        }
+
+        /* Transform nav-links into a full-screen overlay */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-primary);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            opacity: 0;
+            pointer-events: none; /* Prevents clicking when invisible */
+            transition: opacity 0.3s ease;
+            z-index: 90;
+        }
+
+        /* Applied via JS when hamburger is clicked */
+        .nav-links.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Make mobile links larger and more legible */
+        .nav-links a {
+            font-size: 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
     }
 </style>
