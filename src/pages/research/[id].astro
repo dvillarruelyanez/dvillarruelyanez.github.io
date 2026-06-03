@@ -93,9 +93,15 @@ const statusColour = getStatusColour(project.data.status);
                                             )}
                                         </time>
                                         <h3>{entry.data.title}</h3>
-                                        <div class="markdown-content entry-content">
-                                            <EntryContent />
-                                        </div>
+                                        <p class="entry-summary">
+                                            {entry.data.summary}
+                                        </p>
+                                        <a
+                                            href={`/research/updates/${entry.id}`}
+                                            class="read-more-link"
+                                        >
+                                            Read full update &rarr;
+                                        </a>
                                     </div>
                                 </div>
                             );
@@ -290,5 +296,28 @@ const statusColour = getStatusColour(project.data.status);
 
     .entry-content p:last-child {
         margin-bottom: 0;
+    }
+
+    .entry-summary {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+    }
+
+    .read-more-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--accent-blue);
+        font-weight: 500;
+        text-decoration: none;
+        transition:
+            transform 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .read-more-link:hover {
+        transform: translateX(4px);
+        color: var(--text-primary);
     }
 </style>

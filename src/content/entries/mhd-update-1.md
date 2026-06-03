@@ -2,6 +2,7 @@
 title: "Trying gPLUTO in CEDIA"
 date: 2026-04-10
 project: "mhd-starburst"
+summary: "Benchmarking adibatic and radiatively cooling w."
 ---
 
 I set the objective of reproducing the results of my BSc thesis (the wind-cloud problem under custom starburst radiation fields) with gPLUTO.

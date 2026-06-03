@@ -19,6 +19,7 @@ const entries = defineCollection({
         title: z.string(),
         date: z.date(),
         project: reference('projects'),
+        summary: z.string(),
     }),
 });
 

@@ -1,0 +1,102 @@
+---
+// src/pages/research/updates/[id].astro
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+    const entries = await getCollection("entries");
+    return entries.map((entry) => ({
+        params: { id: entry.id },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} | Update`}>
+    <article class="update-container fade-in">
+        <header class="update-header">
+            <a href={`/research/${entry.data.project.id}`} class="back-link">
+                &larr; Back to Project Overview
+            </a>
+
+            <div class="title-wrapper">
+                <time
+                    datetime={entry.data.date.toISOString()}
+                    class="update-date"
+                >
+                    {
+                        entry.data.date.toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                        })
+                    }
+                </time>
+                <h1>{entry.data.title}</h1>
+            </div>
+        </header>
+
+        <section class="markdown-content update-content fade-in-delayed">
+            <Content />
+        </section>
+    </article>
+</BaseLayout>
+
+<style>
+    .update-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding-bottom: 4rem;
+    }
+
+    .update-header {
+        margin-top: 1.5rem;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+        padding-bottom: 2rem;
+    }
+
+    .back-link {
+        color: var(--text-secondary);
+        display: inline-block;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .back-link:hover {
+        color: var(--accent-blue);
+        transform: translateX(-4px);
+    }
+
+    .title-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .update-date {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 500;
+    }
+
+    h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        margin: 0;
+        line-height: 1.2;
+        color: var(--text-primary);
+    }
+
+    .update-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+    }
+</style>
